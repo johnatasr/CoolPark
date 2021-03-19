@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "coolpark"
+version = "0.1.0"
+description = "A application developed to made easy the parking management by Django API"
+authors = ["Johnatas Rabelo"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+Django = "^3.1.7"
+djangorestframework = "^3.12.2"
+pydantic = "^1.8.1"
+python-dateutil = "2.8.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
