@@ -1,12 +1,23 @@
 from pydantic import BaseModel
-from typing import List, Type
-from datetime import datetime
-# from .helpers import
 
 
 class Automobilie(BaseModel):
-    id: int
-    plate: str
+    _id: int
+    _plate: str
 
     def __repr__(self):
         return f"Entity: Automobilie<id:{self.id},  plate:{self.plate}>"
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not self == other
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def plate(self):
+        return self._plate

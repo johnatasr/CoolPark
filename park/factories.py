@@ -1,4 +1,4 @@
-from automobilies.repositories import AutomobiliesRepo
+from coolpark.automobilies.repositories import AutomobiliesRepo
 from .repository import ParkRepo
 from .interators import (
     CheckInInterator,
@@ -42,12 +42,3 @@ class ParkFactory:
     @staticmethod
     def create_new_auto(auto_payload: dict):
         return AutomobiliesRepo().create_auto(auto_payload)
-
-    # @staticmethod
-    # def create_scene_repo():
-    #     return SceneRepo()
-    #
-    # @staticmethod
-    # def create_scene_validator():
-    #     return SceneValidator(create_experience_repo())
-    #

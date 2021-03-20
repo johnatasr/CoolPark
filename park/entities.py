@@ -1,63 +1,71 @@
 from pydantic import BaseModel
 from typing import List, Type
 from datetime import datetime
-# from .helpers import
+from coolpark.automobilies.models import Automobilie
 
 
 class ParkingOcurrency(BaseModel):
-    id: int
-    time: Type[datetime]
-    paid: bool
-    left: bool
-    auto: Type[Automobilie]
+    _id: int
+    _time: Type[datetime]
+    _paid: bool
+    _left: bool
+    _auto: Type[Automobilie]
 
     def __repr__(self):
         return f"Entity: ParkingOcurrency<id:{self.id}, time:{self.time},  \
                paid:{self.paid}, left:{self.left}, auto:{self.auto.plate}>"
 
-    # @property
-    # def full_name(self) -> str:
-    #     return self.user.full_name
-    #
-    # @property
-    # def skills(self) -> List:
-    #     skills = []
-    #     for professional_experience in self.professionalExperiences:
-    #         skills += professional_experience.skills
-    #     return list(set(skills))
-    #
-    # @property
-    # def get_formated_date(self) -> Type[datetime]:
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
 
-    #
-    #
-    #
-    #     return result
-    #
-    # def get_duration_in_months_by_skill(self) -> Dict[str, int]:
-    #     skills = {}
-    #     for skill, date_ranges in self.get_date_ranges_by_skill().items():
-    #         all_days_experience = get_all_days_experience(date_ranges)
-    #         days = remove_overlapped_days(all_days_experience)
-    #         num_days = get_num_days(days)
-    #         num_months = get_num_months(num_days)
-    #         skills[skill] = num_months
-    #     return skills
-    # def computed_skills(self):
-    #     duration_in_months_by_skill = self.get_duration_in_months_by_skill()
-    #     return [
-    #         {
-    #             "id": skill.id,
-    #             "name": skill.name,
-    #             "durationInMonths": duration_in_months_by_skill.get(skill.name),
-    #         }
-    #         for skill in self.skills
-    #     ]
+    def __ne__(self, other):
+        return not self == other
 
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def time(self):
+        return self._time
+
+    @property
+    def paid(self):
+        return self._paid
+
+    @property
+    def left(self):
+        return self._left
+
+    @property
+    def auto(self):
+        return self._auto
+
+    @property
+    def auto_plate(self):
+        return self._auto.plate
 
 
 class Park(BaseModel):
-    id: int
-    park_ocurrencies: List[ParkingOcurrency]
+    _id: int
+    _park_ocurrencies: List[ParkingOcurrency]
+
+    def __repr__(self):
+        return f"Entity: Park<id:{self.id}, park_ocurrencies:{self.park_ocurrencies}>"
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not self == other
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def park_ocurrencies(self):
+        return self.park_ocurrencies
+
 
 
