@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+  db:
+    image: "postgres:alpine"
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+
+  result:
+    image: "redis:alpine"
+
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    working_dir: /var/www/app
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      IN_DOCKER: 1
+    depends_on:
+      - db
+      - result
+
+  celery:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: celery -A cni worker --loglevel=info
+    working_dir: /var/www/app
+    env_file: backend/.env
+    environment:
+      IN_DOCKER: 1
+    depends_on:
+      - db
+      - result
