@@ -10,8 +10,8 @@ class Automobilie(models.Model):
         blank=False
     )
 
-    class Meta:
-        app_label = 'automobilies'
+    # class Meta:
+    #     app_label = 'automobilies'
 
     def __str__(self):
         return self.plate

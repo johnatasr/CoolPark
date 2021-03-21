@@ -1,9 +1,10 @@
-from pydantic import BaseModel
 
 
-class Automobilie(BaseModel):
-    _id: int
-    _plate: str
+class Automobilie:
+
+    def __init__(self, id: int, plate: str):
+        self._id = id
+        self._plate = plate
 
     def __repr__(self):
         return f"Entity: Automobilie<id:{self.id},  plate:{self.plate}>"

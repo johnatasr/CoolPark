@@ -1,5 +1,5 @@
+from configs.exceptions import InvalidPayloadException
 from .interfaces import IValidator
-from coolpark.configs.exceptions import InvalidPayloadException
 from .helpers import ParkingHelpers
 
 

@@ -1,15 +1,22 @@
-from pydantic import BaseModel
 from typing import List, Type
 from datetime import datetime
-from coolpark.automobilies.models import Automobilie
+from automobilies.models import Automobilie
 
 
-class ParkingOcurrency(BaseModel):
-    _id: int
-    _time: Type[datetime]
-    _paid: bool
-    _left: bool
-    _auto: Type[Automobilie]
+class ParkingOcurrency:
+
+    def __init__(self,
+                 id: int,
+                 time: Type[datetime],
+                 paid: bool,
+                 left: bool,
+                 auto: Type[Automobilie]):
+
+        self._id = id
+        self._time = time
+        self._paid = paid
+        self._left = left
+        self._auto = auto
 
     def __repr__(self):
         return f"Entity: ParkingOcurrency<id:{self.id}, time:{self.time},  \
@@ -20,6 +27,9 @@ class ParkingOcurrency(BaseModel):
 
     def __ne__(self, other):
         return not self == other
+
+    def __hash__(self):
+        return hash(("id", self.id, "time", self.time))
 
     @property
     def id(self):
@@ -46,9 +56,11 @@ class ParkingOcurrency(BaseModel):
         return self._auto.plate
 
 
-class Park(BaseModel):
-    _id: int
-    _park_ocurrencies: List[ParkingOcurrency]
+class Park:
+
+    def __init__(self, id: int , park_ocurrencies: List[ParkingOcurrency]):
+        self._id = id
+        self._park_ocurrencies = park_ocurrencies
 
     def __repr__(self):
         return f"Entity: Park<id:{self.id}, park_ocurrencies:{self.park_ocurrencies}>"
@@ -58,6 +70,9 @@ class Park(BaseModel):
 
     def __ne__(self, other):
         return not self == other
+
+    def __hash__(self):
+        return hash(("id", self.id, "name", self.name))
 
     @property
     def id(self):

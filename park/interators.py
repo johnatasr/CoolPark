@@ -1,5 +1,5 @@
+from configs.exceptions import InteratorException
 from .interfaces import IIterator
-from coolpark.configs.exceptions import InteratorException
 from typing import Any
 
 
@@ -27,11 +27,17 @@ class CheckInInterator(IIterator):
             Executa o fluxo a qual o interator foi designado
         """
         try:
-            valided_payload = self.validator().validate_payload(self.payload, update=False)
+            valided_payload = self.validator().validate_payload(self.payload)
 
             if valided_payload:
-                created_parking_ocurrency = self.repo.create_parking_ocurrency(self.payload)
-                serialized_return = self.serializer(created_parking_ocurrency)
+                plate: str = self.payload['plate']
+                created_parking_ocurrency = self.repo()\
+                    .create_parking_ocurrency_by_plate(plate=plate)
+
+                serialized_return = self.serializer(
+                    parking=created_parking_ocurrency,
+                    msg="Check-in created"
+                )
                 return serialized_return
         except InteratorException as error:
             raise InteratorException(error)
@@ -69,7 +75,7 @@ class CheckOutInterator(IIterator):
             if parking.exits():
                 if parking.paid:
                     parking_entity = self.repo.update_parking_ocurrency_checkout(parking)
-                    serialize = self.serializer(parking_entity)
+                    serialize = self.serializer(parking=parking_entity, msg="Check-out done")
                     return serialize
                 else:
                     serialize = {"msg": "Cannot do Check-out, payment not done", "plate": parking.plate}
@@ -113,7 +119,7 @@ class DoPaymentInterator(IIterator):
 
             if parking.exits():
                 parking_entity = self.repo.update_parking_ocurrency_pay(parking)
-                serialize = self.serializer(parking_entity)
+                serialize = self.serializer(parking=parking_entity, msg="Payment done")
                 return serialize
             else:
                 serialize = {"msg": f"Parking not found with ID : {self.parking_id}"}

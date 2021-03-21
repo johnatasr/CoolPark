@@ -1,4 +1,4 @@
-from coolpark.configs.exceptions import ConflictException
+from configs.exceptions import ConflictException
 from .entities import Automobilie
 from .models import Automobilie as AutomobilieModel
 
@@ -14,12 +14,12 @@ class AutomobiliesRepo:
     def create_auto_model(self, auto_entity):
         return AutomobilieModel.objects.create(plate=auto_entity.plate).save()
 
-    def create_auto(self, auto_payload):
+    def create_auto(self, plate: str):
         """
             Cria uma lista de Entidade Skills no formato final
         """
         try:
-            entity = Automobilie(id=None, plate=auto_payload['plate'])
+            entity = Automobilie(id=None, plate=plate)
             automobilie = self.create_auto_model(entity)
 
             return automobilie

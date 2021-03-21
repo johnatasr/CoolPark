@@ -9,7 +9,7 @@ class ParkingOcurrency(models.Model):
     time = models.DateTimeField()
     paid = models.BooleanField(default=False)
     left = models.BooleanField(default=False)
-    auto = models.ForeignKey(Automobilie)
+    auto = models.ForeignKey(Automobilie, on_delete=models.DO_NOTHING)
 
 
 class SingletonModel(models.Model):

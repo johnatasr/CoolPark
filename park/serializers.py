@@ -2,50 +2,17 @@ from rest_framework import serializers
 from .interfaces import ISerializer
 
 
-class CheckInSerializer(ISerializer):
+class DefaultSerializer(ISerializer):
 
-    def __init__(self, parking):
+    def __init__(self, parking: object, msg: str):
         self.parking = parking
+        self.msg = msg
         self.create_message()
 
     def mount_payload(self):
         return {
-            "msg": "Check-in created",
+            "msg": self.msg,
             "date": self.parking.time,
-            "plate": self.parking.auto.plate
-        }
-
-    def create_message(self):
-        return self.mount_payload()
-
-
-class CheckOutSerializer(ISerializer):
-
-    def __init__(self, parking):
-        self.parking = parking
-        self.create_message()
-
-    def mount_payload(self):
-        return {
-            "msg": "Check-out done",
-            "id": self.parking.id,
-            "plate": self.parking.auto.plate
-        }
-
-    def create_message(self):
-        return self.mount_payload()
-
-
-class DoPaymentSerializer(ISerializer):
-
-    def __init__(self, parking):
-        self.parking = parking
-        self.create_message()
-
-    def mount_payload(self):
-        return {
-            "msg": "Payment done",
-            "id": self.parking.id,
             "plate": self.parking.auto.plate
         }
 

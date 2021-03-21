@@ -1,13 +1,12 @@
 from typing import Type, List, Any
 from abc import ABC, abstractmethod
-from .entities import Skill, Freelancer
 
 
 class IValidator(ABC):
     """ Interface para o Validator"""
 
     @abstractmethod
-    def valid(self, value: bool) -> bool:
+    def validate(self, value: bool) -> bool:
         raise Exception("Validator deve implementar o método: valid")
 
     @abstractmethod
@@ -35,13 +34,9 @@ class ISerializer(ABC):
     """ Interface para o Serializer """
 
     @abstractmethod
-    def serialize_object(self) -> dict:
+    def create_message(self) -> dict:
         raise Exception("Serializer deve implementar o método: serialize_object")
 
     @abstractmethod
-    def set_nested_to_dict(self, skills: List[Skill]) -> list:
-        raise Exception("Serializer deve implementar o método: set_nested_to_dict")
-
-    @abstractmethod
-    def mount_payload(self, skills: Type[Freelancer]) -> dict:
+    def mount_payload(self, payload: dict) -> dict:
         raise Exception("Serializer deve implementar o método: mount_payload")

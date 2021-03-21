@@ -1,6 +1,6 @@
-from coolpark.configs.exceptions import ConflictException
+from configs.exceptions import ConflictException
+from automobilies.repositories import AutomobiliesRepo
 from .helpers import ParkingHelpers
-from .factories import ParkFactory
 from .entities import (
     Park as ParkEntity,
     ParkingOcurrency as ParkingOcurrencyEntity,
@@ -10,7 +10,7 @@ from .models import (
     Park
 )
 
-from typing import Any
+from typing import Any, Type
 
 
 class ParkRepo:
@@ -20,7 +20,6 @@ class ParkRepo:
     """
 
     helper = ParkingHelpers()
-    factory = ParkFactory()
 
     def get_or_create_park_model(self):
         """
@@ -96,15 +95,15 @@ class ParkRepo:
             raise ConflictException(source='repository', code='conflit_in_create',
                                     message=f'Error in create a ocurreny_entity from model : {err}')
 
-    def create_parking_ocurrency(self, payload):
+    def create_parking_ocurrency_by_plate(self, plate: str) -> Type[ParkingOcurrencyEntity]:
         try:
-            park = self.get_or_create_park_model()
-            parking_ocurrency_entity = self.create_parking_ocurrency_entity(
+            park: Type[Park] = self.get_or_create_park_model()
+            parking_ocurrency_entity: Type[ParkingOcurrencyEntity] = self.create_parking_ocurrency_entity(
                 {
                     "time": self.helper.get_today(),
                     "paid": False,
                     "left": False,
-                    "auto": self.factory.create_new_auto(payload)
+                    "auto": AutomobiliesRepo().create_auto(plate)
                 })
 
             parking_ocurrency = self.create_parking_ocurrency_model(parking_ocurrency_entity)

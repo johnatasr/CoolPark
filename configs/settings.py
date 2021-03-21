@@ -33,8 +33,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 APPS = [
-    'park',
-    'automobilies'
+    'park.apps.ParkConfig',
+    'automobilies.apps.AutomobiliesConfig'
 ]
 
 
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+] + APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -94,6 +94,13 @@ if os.getenv("IN_DOCKER"):
     }
 
 elif 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
