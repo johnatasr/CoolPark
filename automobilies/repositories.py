@@ -12,14 +12,16 @@ class AutomobiliesRepo:
     """
 
     def create_auto_model(self, auto_entity):
-        return AutomobilieModel.objects.create(plate=auto_entity.plate).save()
+        automobilie = AutomobilieModel.objects.create(plate=auto_entity.plate)
+        automobilie.save()
+        return automobilie
 
     def create_auto(self, plate: str):
         """
             Cria uma lista de Entidade Skills no formato final
         """
         try:
-            entity = Automobilie(id=None, plate=plate)
+            entity = Automobilie(plate=plate)
             automobilie = self.create_auto_model(entity)
 
             return automobilie

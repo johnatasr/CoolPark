@@ -1,4 +1,3 @@
-from rest_framework import serializers
 from .interfaces import ISerializer
 
 
@@ -7,17 +6,18 @@ class DefaultSerializer(ISerializer):
     def __init__(self, parking: object, msg: str):
         self.parking = parking
         self.msg = msg
-        self.create_message()
 
     def mount_payload(self):
-        return {
+        payload: dict = {
+            "id": self.parking.id,
             "msg": self.msg,
-            "date": self.parking.time,
             "plate": self.parking.auto.plate
         }
+        return payload
 
     def create_message(self):
-        return self.mount_payload()
+        message = self.mount_payload()
+        return message
 
 
 class HistoricSerializer(ISerializer):
@@ -28,7 +28,7 @@ class HistoricSerializer(ISerializer):
 
     def mount_payload(self):
         list_historic: list = []
-        for parking in self.historic:
+        for parking in self.historic.iterator():
             histo = {
                     "id": parking.id,
                     "time": parking.time,

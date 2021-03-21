@@ -1,15 +1,22 @@
 from django.db import models
 from django.core.cache import cache
+from django.utils import timezone
 
 from automobilies.models import Automobilie
 
 
 # Create your models here.
 class ParkingOcurrency(models.Model):
-    time = models.DateTimeField()
+    time = models.CharField('Time elapsed', max_length=244, null=True, blank=True)
+    entry = models.DateTimeField()
+    exit = models.DateTimeField(null=True)
     paid = models.BooleanField(default=False)
     left = models.BooleanField(default=False)
     auto = models.ForeignKey(Automobilie, on_delete=models.DO_NOTHING)
+
+    def save(self, *args, **kwargs):
+        self.entry = timezone.now()
+        return super(ParkingOcurrency, self).save(*args, **kwargs)
 
 
 class SingletonModel(models.Model):
@@ -39,5 +46,5 @@ class SingletonModel(models.Model):
 
 
 class Park(SingletonModel):
-    parking_ocurrencies = models.ManyToManyField(ParkingOcurrency, null=True)
+    parking_ocurrencies = models.ManyToManyField(ParkingOcurrency, blank=True)
 

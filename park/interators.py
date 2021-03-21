@@ -1,6 +1,6 @@
 from configs.exceptions import InteratorException
 from .interfaces import IIterator
-from typing import Any
+from typing import Any, Type
 
 
 class CheckInInterator(IIterator):
@@ -12,7 +12,7 @@ class CheckInInterator(IIterator):
             Inicializa a injecao de dependencia
         """
         self.validator: object = validator
-        self.repo: object = repo
+        self.repo: object = repo()
         self.serializer: object = serializer
 
     def set_params(self, park_payload: (dict, list)):
@@ -31,13 +31,13 @@ class CheckInInterator(IIterator):
 
             if valided_payload:
                 plate: str = self.payload['plate']
-                created_parking_ocurrency = self.repo()\
+                created_parking_ocurrency = self.repo\
                     .create_parking_ocurrency_by_plate(plate=plate)
 
                 serialized_return = self.serializer(
                     parking=created_parking_ocurrency,
                     msg="Check-in created"
-                )
+                ).create_message()
                 return serialized_return
         except InteratorException as error:
             raise InteratorException(error)
@@ -52,7 +52,7 @@ class CheckOutInterator(IIterator):
             Inicializa a injecao de dependencia
         """
         self.validator: object = validator
-        self.repo: object = repo
+        self.repo: object = repo()
         self.serializer: object = serializer
 
     def set_params(self, parking_id: Any):
@@ -70,15 +70,20 @@ class CheckOutInterator(IIterator):
             if isinstance(self.parking_id, str):
                 self.parking_id = int(self.parking_id)
 
-            parking = self.repo.get_parking_ocurrency_by_id(self.parking_id)
+            parking: object = self.repo.get_parking_ocurrency_by_id(id=self.parking_id)
 
-            if parking.exits():
+            if parking.exists():
+                parking: object = parking.first()
                 if parking.paid:
+                    if parking.left:
+                        serialize = {"msg": "Check-out already done", "id": parking.id}
+                        return serialize
                     parking_entity = self.repo.update_parking_ocurrency_checkout(parking)
-                    serialize = self.serializer(parking=parking_entity, msg="Check-out done")
+                    serialize = self.serializer(parking=parking_entity, msg="Check-out done")\
+                                                                            .create_message()
                     return serialize
                 else:
-                    serialize = {"msg": "Cannot do Check-out, payment not done", "plate": parking.plate}
+                    serialize = {"msg": "Cannot do Check-out, payment not done", "id": parking.id}
                     return serialize
             else:
                 serialize = {"msg": f"Parking not found with ID : {self.parking_id}"}
@@ -97,7 +102,7 @@ class DoPaymentInterator(IIterator):
             Inicializa a injecao de dependencia
         """
         self.validator: object = validator
-        self.repo: object = repo
+        self.repo: object = repo()
         self.serializer: object = serializer
 
     def set_params(self, parking_id: Any):
@@ -115,11 +120,18 @@ class DoPaymentInterator(IIterator):
             if isinstance(self.parking_id, str):
                 self.parking_id = int(self.parking_id)
 
-            parking = self.repo.get_parking_ocurrency_by_id(self.parking_id)
+            parking = self.repo.get_parking_ocurrency_by_id(id=self.parking_id)
 
-            if parking.exits():
+            if parking.exists():
+                parking: object = parking.first()
+
+                if parking.paid:
+                    serialize = {"msg": "Payment already done", "id": parking.id}
+                    return serialize
+
                 parking_entity = self.repo.update_parking_ocurrency_pay(parking)
-                serialize = self.serializer(parking=parking_entity, msg="Payment done")
+                serialize = self.serializer(parking=parking_entity, msg="Payment done")\
+                                                                        .create_message()
                 return serialize
             else:
                 serialize = {"msg": f"Parking not found with ID : {self.parking_id}"}
@@ -156,13 +168,14 @@ class HistoricInterator(IIterator):
             valided_plate = self.validator().validate_only_plate(self.plate)
 
             if valided_plate:
-                historic = self.repo.get_historic_parking_ocurrency_by_plate(self.plate)
+                historic = self.repo().get_historic_by_plate(self.plate)
 
-                if historic.exits():
-                    serialize = self.serializer(historic)
+                if historic.exists():
+                    historic_cached = historic
+                    serialize = self.serializer(historic_cached).create_message()
                     return serialize
                 else:
-                    serialize = {"msg": f"Parking not found with plate : {self.plate}"}
+                    serialize = {"msg": f"Historic not found with plate : {self.plate}"}
                     return serialize
 
         except InteratorException as error:

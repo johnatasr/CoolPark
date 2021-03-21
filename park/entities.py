@@ -1,19 +1,19 @@
 from typing import List, Type
 from datetime import datetime
 from automobilies.models import Automobilie
+from .helpers import ParkingHelpers
 
 
 class ParkingOcurrency:
 
     def __init__(self,
-                 id: int,
-                 time: Type[datetime],
                  paid: bool,
                  left: bool,
                  auto: Type[Automobilie]):
 
-        self._id = id
-        self._time = time
+        self._id = None
+        self._time = None
+        self._exit = None
         self._paid = paid
         self._left = left
         self._auto = auto
@@ -35,9 +35,33 @@ class ParkingOcurrency:
     def id(self):
         return self._id
 
+    def set_id(self, id: int):
+        self._id = id
+
     @property
     def time(self):
         return self._time
+
+    def set_time(self, time_string: str):
+        self._time = time_string
+
+    @property
+    def entry(self):
+        return self._entry
+
+    def set_entry(self, entry: Type[datetime]):
+        self.entry = entry
+
+    @property
+    def exit(self):
+        return self._exit
+
+    def set_exit(self, exit: Type[datetime]):
+        self._exit = exit
+
+    @property
+    def formated_time(self):
+        return ParkingHelpers.payload_time_message(self._time)
 
     @property
     def paid(self):
@@ -58,8 +82,8 @@ class ParkingOcurrency:
 
 class Park:
 
-    def __init__(self, id: int , park_ocurrencies: List[ParkingOcurrency]):
-        self._id = id
+    def __init__(self, park_ocurrencies: List[ParkingOcurrency]):
+        self._id = None
         self._park_ocurrencies = park_ocurrencies
 
     def __repr__(self):
@@ -77,6 +101,10 @@ class Park:
     @property
     def id(self):
         return self._id
+
+    @id.setter
+    def set_id(self, id: int):
+        self._id = id
 
     @property
     def park_ocurrencies(self):

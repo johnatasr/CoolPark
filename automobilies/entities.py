@@ -2,8 +2,8 @@
 
 class Automobilie:
 
-    def __init__(self, id: int, plate: str):
-        self._id = id
+    def __init__(self, plate: str):
+        self._id = None
         self._plate = plate
 
     def __repr__(self):
@@ -18,6 +18,10 @@ class Automobilie:
     @property
     def id(self):
         return self._id
+
+    @id.setter
+    def set_id(self, id: int):
+        self._id = id
 
     @property
     def plate(self):
