@@ -8,6 +8,16 @@ Coolpark é uma API de registros de estacionamento, onde é possível ser integr
 * Docker
 * Python 3.7 >
 
+# Tecnologias
+
+* Django
+* Django RestFramework 
+* Poetry
+* Black
+* Docker
+* Gitlab CI
+
+
 ## Iniciando
 
 Passos para configurar o projeto com docker:
