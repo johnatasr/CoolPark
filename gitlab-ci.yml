@@ -1,26 +1,21 @@
 image: python:latest
-
-variables:
-    SECRET_KEY: ${SECRET_APP}
-    DEBUG: "True"
-    ALLOWED_HOSTS: "['*']"
-    DB_ENGINE: "django.db.backends.sqlite3"
-    DB_NAME: "test_database.sqlite3"
-    ENVIROMENT: "test"
-
-cache:
-  paths:
-- ~/.cache/pip/
-
-before_script:
-  - pip install -r requirements.txt
-
 test:
+  only:
+    refs:
+      -master
+
+  before_script:
+    - pip install -r requirements.txt
   script:
     - python3 manage.py makemigrations
     - python3 manage.py migrate
     - python3 manage.py test
 lint:
+  only:
+    refs:
+      -master
+  before_script:
+    - pip install -r requirements.txt
   script:
     - black automobilies/
     - black parking/
