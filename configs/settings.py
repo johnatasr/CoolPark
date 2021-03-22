@@ -13,21 +13,25 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import sys
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+root = environ.Path(__file__)
+env = environ.Env()
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '811z^g3@b4^vo1v%gkh(3w=93x__!t3tk%uskm4bb8(y#x^&#8'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.str('HOSTS')
 
 
 # Application definition
@@ -81,13 +85,15 @@ WSGI_APPLICATION = 'configs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# if env('ENVIROMENT') == 'test':
+
 if os.getenv("IN_DOCKER"):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": "postgres",
-            "USER": "postgres",
-            "PASSWORD": "postgres",
+            "NAME": env.str("DB_NAME"),
+            "USER": env.str("DB_USER"),
+            "PASSWORD": env.str("DB_PASSWORD"),
             "HOST": "db",
             "PORT": 5432,
         }

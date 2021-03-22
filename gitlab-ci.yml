@@ -1,24 +1,31 @@
-image: python:3.7
+image: python:latest
 
-stages:
-  - test
-  - lint
+variables:
+    SECRET_KEY: ${SECRET_APP}
+    DEBUG: "True"
+    ALLOWED_HOSTS: "['*']"
+    DB_ENGINE: "django.db.backends.sqlite3"
+    DB_NAME: "test_database.sqlite3"
+    ENVIROMENT: "test"
+
+cache:
+  paths:
+- ~/.cache/pip/
 
 before_script:
-  - pip install poetry
-  - poetry config virtualenvs.create false
-  - poetry install
+  - pip install -r requirements.txt
 
-Unit Tests:
-  stage: test
+test:
   script:
-    - pythoon manage.py test
-
-Python Code Lint:
-  stage: lint
+    - python3 manage.py makemigrations
+    - python3 manage.py migrate
+    - python3 manage.py test
+lint:
   script:
-    - black parking/
     - black automobilies/
-    - black configs/
+    - black parking/
+
+
+
 
 
