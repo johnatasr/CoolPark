@@ -1,9 +1,10 @@
 image: python:latest
-
-before_script:
-  - pip install -r requirements.txt
+stages:
+  - test
+  - lint
 
 test:
+  stage: test
   before_script:
     - pip install -r requirements.txt
   script:
@@ -11,6 +12,9 @@ test:
     - python3 manage.py migrate
     - python3 manage.py test
 lint:
+  stage: lint
+  before_script:
+    - pip install -r requirements.txt
   script:
     - black automobilies/
     - black parking/
