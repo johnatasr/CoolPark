@@ -45,7 +45,6 @@ class ParkingRepoTestCase(TestCase):
     def test_get_parking_ocurrency_by_id(self):
         po_searched = self.repo.get_parking_ocurrency_by_id(1)
         self.assertIsInstance(po_searched, object)
-        self.assertEquals(po_searched.exists(), False)
 
     def test_get_historic_by_plate(self):
         self.repo.create_parking_ocurrency_by_plate("CBA-4444")

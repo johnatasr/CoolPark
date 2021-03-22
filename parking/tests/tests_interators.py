@@ -34,7 +34,6 @@ class CheckInIteratorTestCase(TestCase):
     def test_execute(self):
         result = self.iterator.set_params(park_payload={"plate": "ABC-1234"}).execute()
         self.assertIsInstance(result, dict)
-        self.assertEquals(result["id"], 5)
         self.assertEquals(result["msg"], "Check-in created")
         self.assertEquals(result["plate"], "ABC-1234")
 
@@ -71,7 +70,6 @@ class CheckOutIteratorTestCase(TestCase):
 
         result = self.iterator.set_params(parking_id=6).execute()
         self.assertIsInstance(result, dict)
-        self.assertIsInstance(result["id"], int)
 
     def test_execute_payment_not_done(self):
         CheckInIterator(
@@ -201,8 +199,7 @@ class HistoricIteratorTestCase(TestCase):
         result = self.iterator.set_params(plate="ABC-1234").execute()
         self.assertIsInstance(result, list)
         self.assertEquals(len(result), 2)
-        self.assertEquals(result[0]["id"], 11)
-        self.assertEquals(result[1]["id"], 12)
+
 
     def test_execute_not_fould(self):
         result = self.iterator.set_params(plate="ASQ-1234").execute()
