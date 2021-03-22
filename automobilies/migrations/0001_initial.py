@@ -7,15 +7,25 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Automobilie',
+            name="Automobilie",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('plate', models.CharField(max_length=8, verbose_name='Placa Automóvel')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "plate",
+                    models.CharField(max_length=8, verbose_name="Placa Automóvel"),
+                ),
             ],
         ),
     ]

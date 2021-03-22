@@ -1,7 +1,4 @@
-
-
 class Automobilie:
-
     def __init__(self, plate: str):
         self._id = None
         self._plate = plate
@@ -19,7 +16,6 @@ class Automobilie:
     def id(self):
         return self._id
 
-    @id.setter
     def set_id(self, id: int):
         self._id = id
 

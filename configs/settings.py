@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 APPS = [
-    'park.apps.ParkConfig',
+    'parking.apps.ParkConfig',
     'automobilies.apps.AutomobiliesConfig'
 ]
 
@@ -90,14 +90,6 @@ if os.getenv("IN_DOCKER"):
             "PASSWORD": "postgres",
             "HOST": "db",
             "PORT": 5432,
-        }
-    }
-
-elif 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
 else:

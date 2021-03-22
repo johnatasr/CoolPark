@@ -12,11 +12,10 @@ services:
   backend:
     build:
       dockerfile: Dockerfile
-      context: ./backend
+      context: .
     working_dir: /var/www/app
     ports:
       - "8000:8000"
-    env_file: .env
     environment:
       IN_DOCKER: 1
     depends_on:
