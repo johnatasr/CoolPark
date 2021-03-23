@@ -8,7 +8,7 @@ Coolpark é uma API de registros de estacionamento, onde é possível ser integr
 * Docker
 * Python 3.7 >
 
-# Tecnologias
+## Tecnologias
 
 * Django
 * Django RestFramework 
@@ -34,7 +34,7 @@ O projeto por padrão estará em localhost:8000
 
 ## Como usar ? 
 
-Check-in
+####Check-in
 
 Para fazer o check-in via api é necessário apenas a placa do veículo no payload da requisição. O endpoint responsável é: 
 
@@ -48,25 +48,25 @@ curl --request POST \
 	'
 ```
 
-Check-out
+####Check-out
 
 Para fazer o check-out é necessário passar o ID do parking na url e ter feito o pagamento no endpoint de pagamento. O endpoint responsável é: 
 
 ```
 curl --request PUT \
-  --url http://localhost:8000/parking/10/out
+  --url http://localhost:8000/parking/<ID>/out
 ```
 
-Do-Payment
+####Do-Payment
 
 Este é o endpoint de pagamento, no caso, é passado o ID do parking na url e logo após processado pode ser feito o check-out. Abaixo o enpoint de pagamento:
 
 ```
 curl --request PUT \
-  --url http://localhost:8000/parking/10/pay
+  --url http://localhost:8000/parking/<ID>/pay
 ```
 
-Parking-History
+####Parking-History
 
 Por esse endpoint é possível obter o histórico de registros de um determinado veículo pela placa. Será apenas necessário passar a placa na url como no exemplo abaixo: 
 
